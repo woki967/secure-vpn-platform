@@ -3,3 +3,5 @@ output /
 output/id_ed25519
 output/id_ed25519.pub
 output/bootstrap-summary.txt
+__pycache__/
+*.py[cod]
