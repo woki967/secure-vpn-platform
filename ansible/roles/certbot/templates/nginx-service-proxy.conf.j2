@@ -1,6 +1,14 @@
+{% set backend_path = service.backend_path | default('/', true) | trim %}
+{% if backend_path in ['', '/'] %}
+{% set upstream_path = '/' %}
+{% elif backend_path.endswith('/') %}
+{% set upstream_path = backend_path if backend_path.startswith('/') else '/' ~ backend_path %}
+{% else %}
+{% set upstream_path = (backend_path if backend_path.startswith('/') else '/' ~ backend_path) ~ '/' %}
+{% endif %}
 {% if service.path == '/' %}
         location / {
-            proxy_pass http://{{ service.vpn_ip }}:{{ service.local_port }};
+            proxy_pass http://{{ service.vpn_ip }}:{{ service.local_port }}{{ upstream_path }};
 
             proxy_set_header Host $host;
             proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
@@ -8,7 +16,7 @@
         }
 {% elif service.path.endswith('/') %}
         location {{ service.path }} {
-            proxy_pass http://{{ service.vpn_ip }}:{{ service.local_port }}/;
+            proxy_pass http://{{ service.vpn_ip }}:{{ service.local_port }}{{ upstream_path }};
 
             proxy_set_header Host $host;
             proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
@@ -20,7 +28,7 @@
         }
 
         location {{ service.path }}/ {
-            proxy_pass http://{{ service.vpn_ip }}:{{ service.local_port }}/;
+            proxy_pass http://{{ service.vpn_ip }}:{{ service.local_port }}{{ upstream_path }};
 
             proxy_set_header Host $host;
             proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;

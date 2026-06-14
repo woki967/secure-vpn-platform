@@ -13,8 +13,13 @@ on:
         required: true
 
       path:
-        description: "Proxy path"
+        description: "URL path on nginx (use / for domain root)"
         required: true
+        default: "/"
+
+      backend_path:
+        description: "Path on VPN client (folder where app listens)"
+        required: false
         default: "/"
 
       local_port:
@@ -412,6 +417,7 @@ jobs:
 
           VPN_IP: ${{ github.event.inputs.vpn_ip }}
           PATH_VALUE: ${{ github.event.inputs.path }}
+          BACKEND_PATH_VALUE: ${{ github.event.inputs.backend_path }}
           LOCAL_PORT: ${{ github.event.inputs.local_port }}
 
           HAS_DOMAIN: ${{ github.event.inputs.has_domain }}
@@ -437,6 +443,8 @@ jobs:
           vpn_ip: ${VPN_IP}
 
           path: "${PATH_VALUE}"
+
+          backend_path: "${BACKEND_PATH_VALUE:-/}"
 
           local_port: ${LOCAL_PORT}
 

@@ -13,8 +13,13 @@ on:
         required: true
 
       path:
-        description: "Proxy path"
+        description: "URL path on nginx (use / for domain root)"
         required: true
+        default: "/"
+
+      backend_path:
+        description: "Path on VPN client (folder where app listens)"
+        required: false
         default: "/"
 
       local_port:
@@ -175,6 +180,7 @@ jobs:
             import re
 
             path = "${{ github.event.inputs.path }}".strip()
+            backend_path = "${{ github.event.inputs.backend_path }}".strip() or "/"
 
             local_port = int(
                 "${{ github.event.inputs.local_port }}"
@@ -184,12 +190,16 @@ jobs:
 
             public_port_raw = "${{ github.event.inputs.public_port }}".strip()
 
-            if not re.fullmatch(
-                r"/([A-Za-z0-9._-]+/)*[A-Za-z0-9._-]*/?",
-                path
-            ):
+            path_pattern = r"/([A-Za-z0-9._-]+/)*[A-Za-z0-9._-]*/?"
+
+            if not re.fullmatch(path_pattern, path):
                 raise SystemExit(
                     "Invalid path format"
+                )
+
+            if not re.fullmatch(path_pattern, backend_path):
+                raise SystemExit(
+                    "Invalid backend_path format"
                 )
 
             if not (1 <= local_port <= 65535):
@@ -457,6 +467,7 @@ jobs:
             SERVICE_NAME: ${{ github.event.inputs.service_name }}
             VPN_IP: ${{ github.event.inputs.vpn_ip }}
             PATH_VALUE: ${{ github.event.inputs.path }}
+            BACKEND_PATH_VALUE: ${{ github.event.inputs.backend_path }}
             LOCAL_PORT: ${{ github.event.inputs.local_port }}
 
             HAS_DOMAIN: ${{ github.event.inputs.has_domain }}
@@ -475,6 +486,7 @@ jobs:
             SERVICE_NAME="${SERVICE_NAME}"
             VPN_IP="${VPN_IP}"
             PATH_VALUE="${PATH_VALUE}"
+            BACKEND_PATH_VALUE="${BACKEND_PATH_VALUE:-/}"
             LOCAL_PORT="${LOCAL_PORT}"
 
             HAS_DOMAIN="${HAS_DOMAIN}"
@@ -503,6 +515,8 @@ jobs:
             vpn_ip: ${VPN_IP}
 
             path: "${PATH_VALUE}"
+
+            backend_path: "${BACKEND_PATH_VALUE}"
 
             local_port: ${LOCAL_PORT}
 
