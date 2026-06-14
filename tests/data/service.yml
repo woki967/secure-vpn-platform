@@ -1,0 +1,8 @@
+name: grafana
+vpn_ip: 10.8.0.2
+has_domain: true
+path: /
+local_port: 3000
+domain: "grafana.duckdns.org"
+public_port: null
+basic_auth: true
