@@ -1,0 +1,29 @@
+{% if service.path == '/' %}
+        location / {
+            proxy_pass http://{{ service.vpn_ip }}:{{ service.local_port }};
+
+            proxy_set_header Host $host;
+            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+            proxy_set_header X-Forwarded-Proto https;
+        }
+{% elif service.path.endswith('/') %}
+        location {{ service.path }} {
+            proxy_pass http://{{ service.vpn_ip }}:{{ service.local_port }}/;
+
+            proxy_set_header Host $host;
+            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+            proxy_set_header X-Forwarded-Proto https;
+        }
+{% else %}
+        location = {{ service.path }} {
+            return 301 {{ service.path }}/;
+        }
+
+        location {{ service.path }}/ {
+            proxy_pass http://{{ service.vpn_ip }}:{{ service.local_port }}/;
+
+            proxy_set_header Host $host;
+            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+            proxy_set_header X-Forwarded-Proto https;
+        }
+{% endif %}

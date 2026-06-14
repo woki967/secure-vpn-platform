@@ -436,7 +436,7 @@ jobs:
 
           vpn_ip: ${VPN_IP}
 
-          path: ${PATH_VALUE}
+          path: "${PATH_VALUE}"
 
           local_port: ${LOCAL_PORT}
 
