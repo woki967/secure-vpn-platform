@@ -1,0 +1,30 @@
+
+========================================
+GITHUB VARIABLES
+========================================
+
+AZURE_CLIENT_ID=24c0fa82-e42a-4a6b-b0b1-1cf7d75c87eb
+
+AZURE_TENANT_ID=d1f2ca87-be59-417b-b1a9-12585cedf941
+
+AZURE_SUBSCRIPTION_ID=f8fb4eac-6713-4ed6-abe3-255fd4a00597
+
+SSH_PUBLIC_KEY=ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPghur9UlpHeUqCkztVRZARZOFZwuG8XE2CGRd9Fq23R wojciech@wojtek-fedora
+
+========================================
+GITHUB SECRETS
+========================================
+
+SSH_PRIVATE_KEY
+
+Use content from:
+
+output/id_ed25519
+
+========================================
+BACKEND
+========================================
+
+terraform/backend.tf
+
+========================================
