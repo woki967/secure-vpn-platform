@@ -1,0 +1,1 @@
+To jest plik utworzony loklanie, który zostanie zapisany na maszynie wirtualnej :)
