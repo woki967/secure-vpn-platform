@@ -1,8 +1,0 @@
-{
-  "name": "github-actions",
-  "issuer": "https://token.actions.githubusercontent.com",
-  "subject": "repo:woki967/secure-vpn-platform:ref:refs/heads/main",
-  "audiences": [
-    "api://AzureADTokenExchange"
-  ]
-}
